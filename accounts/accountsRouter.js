@@ -48,7 +48,21 @@ router.post('/', (req, res) => {
   })
 });
 
-router.put('/:id', (req, res) =>{});
+router.put('/:id', (req, res) =>{
+  const { id } = req.params;
+  const changes = req.body;
+
+  db("accounts")
+  .where({ id })
+  .update(changes)
+  .then( count => {
+    count > 0 ? res.status(200).json({ data: count }) :
+    res.status(404).json({ message: "There was no rcord to update" })
+  })
+  .catch(err => {
+    res.status(500).json({ message: "Could not update the account" })
+  })
+});
 
 router.delete('/:id', (req, res) =>{});
 
