@@ -16,6 +16,7 @@ router.get('/', (req,res) => {
   })
 });
 
+//DONE
 router.get('/:id', (req,res) => {
   const { id } = req.params;
   db.select("*")
@@ -29,7 +30,23 @@ router.get('/:id', (req,res) => {
   })
 });
 
-router.post('/', (req, res) => {});
+//DONE
+router.post('/', (req, res) => {
+  const newAccount = req.body;
+  db("accounts")
+  .insert(newAccount, "id")
+  .then(ids => {
+    db("accounts")
+    .where({ id: ids[0] })
+    .first()
+    .then( account => {
+      res.status(200).json({ data: account })
+    })
+    .catch(error => {
+      res.status(500).json({ message: "there was an error making the account" })
+    })
+  })
+});
 
 router.put('/:id', (req, res) =>{});
 
